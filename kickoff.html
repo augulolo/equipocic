@@ -1,0 +1,606 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2868
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 AppleColorEmoji;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf0 \expnd0\expndtw0\kerning0
+<!DOCTYPE html>\
+<html lang="es">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Plan Estrat\'e9gico Kickoff CIC 2026</title>\
+    <script src="https://cdn.tailwindcss.com"></script>\
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>\
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">\
+    \
+    <!-- Chosen Palette: Teal (Primary for health/professionalism), Amber (Accent for warmth/humanity), Slate (Neutrals for readability) -->\
+    <!-- Application Structure Plan: A 3-tab dashboard designed for meeting facilitation. Tab 1 sets the stage (Why & Where). Tab 2 is an interactive timeline of the Agenda (What), including a chart to visualize time allocation. Tab 3 is an actionable checklist for Deliverables and Next Steps (How). This structure moves the coordinators from understanding the strategy to executing it. -->\
+    <!-- Visualization & Content Choices: \
+         1. Time Allocation -> Goal: Inform -> Viz: Chart.js Doughnut Chart -> Justification: Shows that the 3-hour event is perfectly balanced into four 45-minute blocks. Library: Chart.js Canvas. \
+         2. Agenda -> Goal: Organize -> Viz: Interactive CSS Timeline -> Justification: Allows coordinators to click and expand each block to see specific talking points without overwhelming the screen. \
+         3. Next Steps -> Goal: Action/Organize -> Viz: Interactive HTML Checklist -> Justification: Transforms passive reading into active task management.\
+         Confirming NO SVG/Mermaid used. Unicode emojis used for icons. -->\
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->\
+\
+    <style>\
+        body \{\
+            font-family: 'Inter', sans-serif;\
+            background-color: #F8FAFC; /* Slate 50 */\
+            color: #0F172A; /* Slate 900 */\
+        \}\
+\
+        /* Nav active state */\
+        .nav-tab-active \{\
+            border-bottom: 4px solid #0D9488; /* Teal 600 */\
+            color: #0D9488;\
+            font-weight: 600;\
+        \}\
+\
+        /* View toggling */\
+        .view-section \{\
+            display: none;\
+            animation: fadeIn 0.3s ease-in-out;\
+        \}\
+        .view-active \{\
+            display: block;\
+        \}\
+\
+        @keyframes fadeIn \{\
+            from \{ opacity: 0; transform: translateY(5px); \}\
+            to \{ opacity: 1; transform: translateY(0); \}\
+        \}\
+\
+        /* Strict Chart Container Styles */\
+        .chart-container \{\
+            position: relative;\
+            width: 100%;\
+            max-width: 350px;\
+            margin-left: auto;\
+            margin-right: auto;\
+            height: 300px;\
+            max-height: 350px;\
+        \}\
+        @media (min-width: 768px) \{\
+            .chart-container \{ height: 350px; \}\
+        \}\
+\
+        /* Custom Timeline */\
+        .timeline-container \{\
+            position: relative;\
+            padding-left: 2rem;\
+        \}\
+        .timeline-container::before \{\
+            content: '';\
+            position: absolute;\
+            left: 0.75rem;\
+            top: 0;\
+            bottom: 0;\
+            width: 2px;\
+            background-color: #CCFBF1; /* Teal 100 */\
+        \}\
+        .timeline-item \{\
+            position: relative;\
+            margin-bottom: 1.5rem;\
+            cursor: pointer;\
+            transition: transform 0.2s;\
+        \}\
+        .timeline-item:hover \{\
+            transform: translateX(4px);\
+        \}\
+        .timeline-dot \{\
+            position: absolute;\
+            left: -2.35rem;\
+            top: 0.25rem;\
+            width: 1.5rem;\
+            height: 1.5rem;\
+            border-radius: 9999px;\
+            background-color: #0D9488; /* Teal 600 */\
+            border: 4px solid #F0FDFA; /* Teal 50 */\
+            box-shadow: 0 0 0 2px #0D9488;\
+        \}\
+        .timeline-content \{\
+            display: none;\
+            margin-top: 1rem;\
+        \}\
+        .timeline-content.expanded \{\
+            display: block;\
+            animation: slideDown 0.3s ease-out;\
+        \}\
+\
+        @keyframes slideDown \{\
+            from \{ opacity: 0; max-height: 0; \}\
+            to \{ opacity: 1; max-height: 500px; \}\
+        \}\
+\
+        /* Checkbox styling */\
+        .custom-checkbox:checked + label \{\
+            text-decoration: line-through;\
+            color: #94A3B8; /* Slate 400 */\
+        \}\
+    </style>\
+</head>\
+<body class="flex flex-col h-screen overflow-hidden">\
+\
+    <!-- Top Navigation -->\
+    <header class="bg-white shadow-sm z-10 flex-shrink-0">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="flex justify-between items-center h-20">\
+                <div class="flex items-center">\
+                    <div class="flex-shrink-0 text-3xl mr-3">
+\f1 \uc0\u55356 \u57317 
+\f0 </div>\
+                    <div>\
+                        <h1 class="text-2xl font-bold text-teal-800 tracking-tight">Equipo CIC</h1>\
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest">Dashboard de Coordinaci\'f3n</p>\
+                    </div>\
+                </div>\
+                <div class="hidden md:flex space-x-8 h-full">\
+                    <button data-target="view-general" class="nav-btn nav-tab-active inline-flex items-center px-1 pt-1 border-b-4 border-transparent text-sm font-medium text-slate-600 hover:text-teal-800 hover:border-teal-300 transition-colors h-full">\
+                        1. Visi\'f3n General\
+                    </button>\
+                    <button data-target="view-agenda" class="nav-btn inline-flex items-center px-1 pt-1 border-b-4 border-transparent text-sm font-medium text-slate-600 hover:text-teal-800 hover:border-teal-300 transition-colors h-full">\
+                        2. Agenda del Evento\
+                    </button>\
+                    <button data-target="view-gestion" class="nav-btn inline-flex items-center px-1 pt-1 border-b-4 border-transparent text-sm font-medium text-slate-600 hover:text-teal-800 hover:border-teal-300 transition-colors h-full">\
+                        3. Gesti\'f3n y Pr\'f3ximos Pasos\
+                    </button>\
+                </div>\
+            </div>\
+        </div>\
+        <!-- Mobile menu handles -->\
+        <div class="md:hidden flex overflow-x-auto border-t border-slate-100 bg-slate-50">\
+            <button data-target="view-general" class="nav-btn nav-tab-active flex-shrink-0 px-4 py-3 text-sm font-medium text-slate-600">Visi\'f3n General</button>\
+            <button data-target="view-agenda" class="nav-btn flex-shrink-0 px-4 py-3 text-sm font-medium text-slate-600">Agenda</button>\
+            <button data-target="view-gestion" class="nav-btn flex-shrink-0 px-4 py-3 text-sm font-medium text-slate-600">Gesti\'f3n</button>\
+        </div>\
+    </header>\
+\
+    <!-- Main Content Area -->\
+    <main class="flex-1 overflow-y-auto p-4 sm:p-8 bg-slate-50">\
+        \
+        <!-- ========================================== -->\
+        <!-- VIEW 1: VISI\'d3N GENERAL                     -->\
+        <!-- ========================================== -->\
+        <section id="view-general" class="view-section view-active max-w-6xl mx-auto">\
+            <div class="mb-8">\
+                <h2 class="text-3xl font-bold text-slate-800">Plan Estrat\'e9gico Kickoff 2026</h2>\
+                <p class="text-slate-600 mt-2 text-lg">Esta secci\'f3n detalla los fundamentos estrat\'e9gicos del evento y los requisitos log\'edsticos que el Equipo de Coordinaci\'f3n y Direcci\'f3n debe gestionar antes de convocar al plantel.</p>\
+            </div>\
+\
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">\
+                <!-- Fundamentaci\'f3n -->\
+                <div class="lg:col-span-2 space-y-6">\
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">\
+                        <h3 class="text-xl font-bold text-teal-800 mb-6 flex items-center">\
+                            <span class="text-2xl mr-3">
+\f1 \uc0\u55356 \u57263 
+\f0 </span> Fundamentaci\'f3n y Enfoque\
+                        </h3>\
+                        <p class="text-slate-700 mb-6">Las instituciones l\'edderes en neurodesarrollo estructuran su a\'f1o con un evento de inmersi\'f3n. Para Equipo CIC, este formato persigue tres objetivos nucleares:</p>\
+                        \
+                        <div class="grid gap-4 md:grid-cols-3">\
+                            <div class="bg-teal-50 rounded-xl p-5 border border-teal-100 text-center">\
+                                <div class="text-3xl mb-2">
+\f1 \uc0\u55357 \u56521 
+\f0 </div>\
+                                <h4 class="font-bold text-teal-900 mb-2">1. Reducir Incertidumbre</h4>\
+                                <p class="text-sm text-teal-800">Establecer reglas operativas, flujos de comunicaci\'f3n y protocolos de contingencia claros.</p>\
+                            </div>\
+                            <div class="bg-amber-50 rounded-xl p-5 border border-amber-100 text-center">\
+                                <div class="text-3xl mb-2">
+\f1 \uc0\u55357 \u56960 
+\f0 </div>\
+                                <h4 class="font-bold text-amber-900 mb-2">2. Acelerar Aprendizaje</h4>\
+                                <p class="text-sm text-amber-800">Integrar r\'e1pidamente a las nuevas terapeutas a la visi\'f3n y al "M\'e9todo Donad\'edo".</p>\
+                            </div>\
+                            <div class="bg-blue-50 rounded-xl p-5 border border-blue-100 text-center">\
+                                <div class="text-3xl mb-2">
+\f1 \uc0\u55358 \u56605 
+\f0 </div>\
+                                <h4 class="font-bold text-blue-900 mb-2">3. Fidelizar Talento</h4>\
+                                <p class="text-sm text-blue-800">Mantener un clima colaborativo y de fuerte cohesi\'f3n profesional mediante espacios de escucha activa.</p>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+\
+                <!-- Log\'edstica Mesa Chica -->\
+                <div class="lg:col-span-1">\
+                    <div class="bg-slate-800 rounded-2xl shadow-sm p-8 text-white h-full relative overflow-hidden">\
+                        <div class="absolute top-0 right-0 -mr-8 -mt-8 text-9xl opacity-10">
+\f1 \uc0\u55357 \u56517 
+\f0 </div>\
+                        <h3 class="text-xl font-bold text-teal-300 mb-6 relative z-10">Log\'edstica de Coordinaci\'f3n</h3>\
+                        <p class="text-slate-300 text-sm mb-6 relative z-10">Decisiones del Equipo de Coordinaci\'f3n y Direcci\'f3n.</p>\
+                        \
+                        <ul class="space-y-5 relative z-10">\
+                            <li class="flex items-start">\
+                                <span class="text-xl mr-3">
+\f1 \uc0\u55357 \u56787 \u65039 
+\f0 </span>\
+                                <div>\
+                                    <strong class="block text-white">Fecha Estrat\'e9gica</strong>\
+                                    <span class="text-sm text-slate-300">Marzo 2026 (S\'e1bado AM o Viernes PM). Bloquear agenda con 15-20 d\'edas.</span>\
+                                </div>\
+                            </li>\
+                            <li class="flex items-start">\
+                                <span class="text-xl mr-3">
+\f1 \uc0\u55357 \u56525 
+\f0 </span>\
+                                <div>\
+                                    <strong class="block text-white">Sede</strong>\
+                                    <span class="text-sm text-slate-300">San Pedrito 558 o A. Jonte 4091 (La de mayor capacidad).</span>\
+                                </div>\
+                            </li>\
+                            <li class="flex items-start">\
+                                <span class="text-xl mr-3">\uc0\u9749 </span>\
+                                <div>\
+                                    <strong class="block text-white">Recepci\'f3n</strong>\
+                                    <span class="text-sm text-slate-300">Desayuno/Brunch para fomentar networking previo.</span>\
+                                </div>\
+                            </li>\
+                            <li class="flex items-start">\
+                                <span class="text-xl mr-3">
+\f1 \uc0\u55357 \u56541 
+\f0 </span>\
+                                <div>\
+                                    <strong class="block text-white">Gesti\'f3n RSVP</strong>\
+                                    <span class="text-sm text-slate-300">V\'eda WhatsApp institucional. Relevar restricciones alimentarias.</span>\
+                                </div>\
+                            </li>\
+                        </ul>\
+                    </div>\
+                </div>\
+            </div>\
+        </section>\
+\
+        <!-- ========================================== -->\
+        <!-- VIEW 2: AGENDA DEL EVENTO                  -->\
+        <!-- ========================================== -->\
+        <section id="view-agenda" class="view-section max-w-6xl mx-auto">\
+            <div class="mb-8">\
+                <h2 class="text-3xl font-bold text-slate-800">Agenda Interactiva (Duraci\'f3n: 3 horas)</h2>\
+                <p class="text-slate-600 mt-2 text-lg">Explore la estructura del evento. Haga clic en cada bloque de la l\'ednea de tiempo para ver los temas espec\'edficos y los responsables asignados a cada presentaci\'f3n.</p>\
+            </div>\
+\
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">\
+                \
+                <!-- CSS Timeline -->\
+                <div class="lg:col-span-2">\
+                    <div class="timeline-container bg-white p-8 rounded-2xl shadow-sm border border-slate-200">\
+                        \
+                        <!-- Block A -->\
+                        <div class="timeline-item group" onclick="toggleTimeline('blockA')">\
+                            <div class="timeline-dot group-hover:bg-teal-400 transition-colors"></div>\
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 group-hover:border-teal-300 transition-colors">\
+                                <div class="flex justify-between items-center">\
+                                    <h3 class="text-lg font-bold text-slate-800">Bloque A: Identidad y Pertenencia</h3>\
+                                    <span class="text-sm font-semibold text-teal-700 bg-teal-100 px-3 py-1 rounded-full">45 min</span>\
+                                </div>\
+                                <p class="text-sm text-slate-500 mt-1">Lidera: Dra. Ana Cristina Donadio</p>\
+                                \
+                                <div id="blockA" class="timeline-content">\
+                                    <ul class="mt-4 space-y-3 text-slate-700 list-disc pl-5">\
+                                        <li><strong>Desayuno y Recepci\'f3n:</strong> Bienvenida c\'e1lida para fomentar la integraci\'f3n del equipo previo al inicio.</li>\
+                                        <li><strong>Apertura Institucional (Eje Central):</strong> Comunicaci\'f3n profunda de la Misi\'f3n, Visi\'f3n y Valores fundamentales de Equipo CIC. Hacer un fuerte \'e9nfasis en nuestra esencia: transmitir que el abordaje integral es el resultado de combinar rigurosidad m\'e9dica-neurol\'f3gica con una genuina calidez humana y contenci\'f3n familiar.</li>\
+                                        <li><strong>Onboarding Oficial:</strong> Presentaci\'f3n formal de nuevas terapeutas, integraci\'f3n a nuestra metodolog\'eda de trabajo y entrega del "Manual de Bienvenida".</li>\
+                                    </ul>\
+                                </div>\
+                            </div>\
+                        </div>\
+\
+                        <!-- Block B -->\
+                        <div class="timeline-item group" onclick="toggleTimeline('blockB')">\
+                            <div class="timeline-dot group-hover:bg-teal-400 transition-colors" style="background-color: #F59E0B; box-shadow: 0 0 0 2px #F59E0B;"></div>\
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 group-hover:border-amber-300 transition-colors">\
+                                <div class="flex justify-between items-center">\
+                                    <h3 class="text-lg font-bold text-slate-800">Bloque B: Operaciones, Comunicaci\'f3n y Contingencias</h3>\
+                                    <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">45 min</span>\
+                                </div>\
+                                <p class="text-sm text-slate-500 mt-1">Lideran: Coordinadoras Administrativas/Operativas</p>\
+                                \
+                                <div id="blockB" class="timeline-content">\
+                                    <div class="mt-4 bg-white p-4 rounded border border-slate-200">\
+                                        <h4 class="font-bold text-slate-800 mb-2">Ecosistema de Comunicaci\'f3n (Eje Central)</h4>\
+                                        <ul class="space-y-2 text-slate-700 text-sm list-disc pl-5 mb-4">\
+                                            <li><strong>Interna (FORO):</strong> Uso obligatorio para evoluciones e interconsultas.</li>\
+                                            <li><strong>Externa (Flujos):</strong> Ad\'f3nde derivar sin triangular: Admin (Turnos/Pagos), M\'e9dica (Recetas), Terap\'e9utica (Seguimiento).</li>\
+                                        </ul>\
+                                        <h4 class="font-bold text-slate-800 mb-2">Protocolos de Emergencia</h4>\
+                                        <ul class="space-y-2 text-slate-700 text-sm list-disc pl-5">\
+                                            <li><strong>Paros:</strong> Activaci\'f3n de Telemedicina y reprogramaci\'f3n.</li>\
+                                            <li><strong>Seguridad:</strong> V\'edas de escape y puntos de encuentro (Sede 1 y 2).</li>\
+                                        </ul>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+\
+                        <!-- Block C -->\
+                        <div class="timeline-item group" onclick="toggleTimeline('blockC')">\
+                            <div class="timeline-dot group-hover:bg-teal-400 transition-colors" style="background-color: #3B82F6; box-shadow: 0 0 0 2px #3B82F6;"></div>\
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 group-hover:border-blue-300 transition-colors">\
+                                <div class="flex justify-between items-center">\
+                                    <h3 class="text-lg font-bold text-slate-800">Bloque C: Lo Terap\'e9utico y Nuevos Desaf\'edos</h3>\
+                                    <span class="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">45 min</span>\
+                                </div>\
+                                <p class="text-sm text-slate-500 mt-1">Lideran: Coordinadoras de \'c1rea</p>\
+                                \
+                                <div id="blockC" class="timeline-content">\
+                                    <ul class="mt-4 space-y-3 text-slate-700 list-disc pl-5">\
+                                        <li><strong>Abordaje 360:</strong> Cronograma de la Sala Snoezelen y Talleres de Habilidades Sociales/Padres.</li>\
+                                        <li><strong>Apoyo Escolar:</strong> Lineamientos 2026 y responsables de reuniones con colegios.</li>\
+                                        <li><strong>Proyecto "Colegio Magnasco":</strong> Estrategia de admisi\'f3n y lanzamiento oficial de cursos de Lengua de Se\'f1as para el equipo.</li>\
+                                    </ul>\
+                                </div>\
+                            </div>\
+                        </div>\
+\
+                        <!-- Block D -->\
+                        <div class="timeline-item group" onclick="toggleTimeline('blockD')">\
+                            <div class="timeline-dot group-hover:bg-teal-400 transition-colors" style="background-color: #8B5CF6; box-shadow: 0 0 0 2px #8B5CF6;"></div>\
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 group-hover:border-purple-300 transition-colors">\
+                                <div class="flex justify-between items-center">\
+                                    <h3 class="text-lg font-bold text-slate-800">Bloque D: Desarrollo, Innovaci\'f3n y Redes</h3>\
+                                    <span class="text-sm font-semibold text-purple-700 bg-purple-100 px-3 py-1 rounded-full">45 min</span>\
+                                </div>\
+                                <p class="text-sm text-slate-500 mt-1">Lidera: Dra. Donadio + Coordinaci\'f3n General</p>\
+                                \
+                                <div id="blockD" class="timeline-content">\
+                                    <ul class="mt-4 space-y-3 text-slate-700 list-disc pl-5">\
+                                        <li><strong>Estrategia de Redes:</strong> Reglas de publicaci\'f3n (qu\'e9/cu\'e1ndo/por qu\'e9) y Manual de Interacci\'f3n (c\'f3mo responder/arrobar).</li>\
+                                        <li><strong>Becas CIC:</strong> Requisitos para apoyos en posgrados.</li>\
+                                        <li><strong>Pitch de Ideas y Forms:</strong> Presentaci\'f3n del C\'f3digo QR de innovaci\'f3n. Invitaci\'f3n abierta a sumar propuestas constructivas y rentables.</li>\
+                                        <li><strong>Cierre:</strong> Brindis de inicio de a\'f1o.</li>\
+                                    </ul>\
+                                </div>\
+                            </div>\
+                        </div>\
+\
+                    </div>\
+                </div>\
+\
+                <!-- Chart Representation -->\
+                <div class="lg:col-span-1">\
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 sticky top-8">\
+                        <h3 class="text-xl font-bold text-slate-800 mb-2 text-center">Distribuci\'f3n del Tiempo</h3>\
+                        <p class="text-sm text-slate-500 mb-6 text-center">3 Horas en total</p>\
+                        \
+                        <div class="chart-container">\
+                            <canvas id="agendaChart"></canvas>\
+                        </div>\
+                        \
+                        <div class="mt-8 text-center text-sm text-slate-600">\
+                            <p>La estructura garantiza que cada pilar de la cl\'ednica reciba atenci\'f3n equitativa, evitando reuniones informativas mon\'f3tonas.</p>\
+                        </div>\
+                    </div>\
+                </div>\
+\
+            </div>\
+        </section>\
+\
+        <!-- ========================================== -->\
+        <!-- VIEW 3: GESTI\'d3N Y ENTREGABLES              -->\
+        <!-- ========================================== -->\
+        <section id="view-gestion" class="view-section max-w-6xl mx-auto">\
+            <div class="mb-8">\
+                <h2 class="text-3xl font-bold text-slate-800">Gesti\'f3n y Pr\'f3ximos Pasos</h2>\
+                <p class="text-slate-600 mt-2 text-lg">Revise los materiales que deben entregarse durante el evento y gestione el avance de las tareas directivas (To-Do List).</p>\
+            </div>\
+\
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">\
+                \
+                <!-- Material de Apoyo -->\
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">\
+                    <h3 class="text-xl font-bold text-teal-800 mb-6 flex items-center">\
+                        <span class="text-2xl mr-3">
+\f1 \uc0\u55357 \u56770 \u65039 
+\f0 </span> Entregables del Evento\
+                    </h3>\
+                    <p class="text-slate-600 text-sm mb-6">Material f\'edsico/digital que cada profesional debe llevarse al finalizar la jornada.</p>\
+\
+                    <div class="space-y-4">\
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg border border-slate-100">\
+                            <span class="text-2xl mr-4">
+\f1 \uc0\u55357 \u56534 
+\f0 </span>\
+                            <div>\
+                                <h4 class="font-bold text-slate-800">1. Manual de Bienvenida</h4>\
+                                <p class="text-sm text-slate-600 mt-1">Resumen de visi\'f3n, organigrama y el m\'e9todo de trabajo.</p>\
+                            </div>\
+                        </div>\
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg border border-slate-100">\
+                            <span class="text-2xl mr-4">
+\f1 \uc0\u55357 \u56542 
+\f0 </span>\
+                            <div>\
+                                <h4 class="font-bold text-slate-800">2. Gu\'eda de Comunicaci\'f3n CIC</h4>\
+                                <p class="text-sm text-slate-600 mt-1">One-Pager con accesos al FORO, directorio de \'e1reas y manual de estilo para redes sociales.</p>\
+                            </div>\
+                        </div>\
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg border border-slate-100">\
+                            <span class="text-2xl mr-4">
+\f1 \uc0\u55357 \u57000 
+\f0 </span>\
+                            <div>\
+                                <h4 class="font-bold text-slate-800">3. Ficha de Protocolos</h4>\
+                                <p class="text-sm text-slate-600 mt-1">Tarjet\'f3n con el paso a paso ante incendios y contingencias.</p>\
+                            </div>\
+                        </div>\
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg border border-slate-100">\
+                            <span class="text-2xl mr-4">
+\f1 \uc0\u55357 \u56481 
+\f0 </span>\
+                            <div>\
+                                <h4 class="font-bold text-slate-800">4. Forms para Propuestas de Innovaci\'f3n</h4>\
+                                <p class="text-sm text-slate-600 mt-1">C\'f3digo QR entregado al equipo para escanear en el acto o en su casa. Permite env\'edos an\'f3nimos o identificados para aportar sugerencias constructivas, innovadoras y/o rentables para el Equipo CIC.</p>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+\
+                <!-- To-Do List Interactiva -->\
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">\
+                    <h3 class="text-xl font-bold text-amber-600 mb-6 flex items-center">\
+                        <span class="text-2xl mr-3">
+\f1 \uc0\u9989 
+\f0 </span> Pr\'f3ximos Pasos (To-Do List)\
+                    </h3>\
+                    <p class="text-slate-600 text-sm mb-6">Interact\'fae marcando las tareas a medida que el Equipo de Coordinaci\'f3n avance en la planificaci\'f3n.</p>\
+\
+                    <div class="space-y-3">\
+                        <!-- Task 1 -->\
+                        <div class="flex items-center p-3 hover:bg-slate-50 rounded transition-colors">\
+                            <input type="checkbox" id="task1" class="custom-checkbox w-5 h-5 text-teal-600 border-slate-300 rounded focus:ring-teal-500 cursor-pointer">\
+                            <label for="task1" class="ml-3 block text-slate-700 font-medium cursor-pointer flex-1">\
+                                Aprobar el plan de agenda (Direcci\'f3n y Coord.)\
+                            </label>\
+                        </div>\
+                        <!-- Task 2 -->\
+                        <div class="flex items-center p-3 hover:bg-slate-50 rounded transition-colors">\
+                            <input type="checkbox" id="task2" class="custom-checkbox w-5 h-5 text-teal-600 border-slate-300 rounded focus:ring-teal-500 cursor-pointer">\
+                            <label for="task2" class="ml-3 block text-slate-700 font-medium cursor-pointer flex-1">\
+                                Asignar coordinadoras expositoras (Bloques B y C)\
+                            </label>\
+                        </div>\
+                        <!-- Task 3 -->\
+                        <div class="flex items-center p-3 hover:bg-slate-50 rounded transition-colors">\
+                            <input type="checkbox" id="task3" class="custom-checkbox w-5 h-5 text-teal-600 border-slate-300 rounded focus:ring-teal-500 cursor-pointer">\
+                            <label for="task3" class="ml-3 block text-slate-700 font-medium cursor-pointer flex-1">\
+                                Redactar "Gu\'eda de Comunicaci\'f3n CIC"\
+                            </label>\
+                        </div>\
+                        <!-- Task 4 -->\
+                        <div class="flex items-center p-3 hover:bg-slate-50 rounded transition-colors">\
+                            <input type="checkbox" id="task4" class="custom-checkbox w-5 h-5 text-teal-600 border-slate-300 rounded focus:ring-teal-500 cursor-pointer">\
+                            <label for="task4" class="ml-3 block text-slate-700 font-medium cursor-pointer flex-1">\
+                                Redactar "Manual de Bienvenida"\
+                            </label>\
+                        </div>\
+                        <!-- Task 5 -->\
+                        <div class="flex items-center p-3 hover:bg-slate-50 rounded transition-colors">\
+                            <input type="checkbox" id="task5" class="custom-checkbox w-5 h-5 text-teal-600 border-slate-300 rounded focus:ring-teal-500 cursor-pointer">\
+                            <label for="task5" class="ml-3 block text-slate-700 font-medium cursor-pointer flex-1">\
+                                Enviar mensaje oficial "Save the Date"\
+                            </label>\
+                        </div>\
+                        <!-- Task 6 -->\
+                        <div class="flex items-center p-3 hover:bg-slate-50 rounded transition-colors">\
+                            <input type="checkbox" id="task6" class="custom-checkbox w-5 h-5 text-teal-600 border-slate-300 rounded focus:ring-teal-500 cursor-pointer">\
+                            <label for="task6" class="ml-3 block text-slate-700 font-medium cursor-pointer flex-1">\
+                                Relevar respuestas y men\'fa (RSVP WhatsApp)\
+                            </label>\
+                        </div>\
+                    </div>\
+                </div>\
+\
+            </div>\
+        </section>\
+\
+    </main>\
+\
+    <script>\
+        // --- 1. SPA Navigation Logic ---\
+        document.addEventListener('DOMContentLoaded', () => \{\
+            const navButtons = document.querySelectorAll('.nav-btn');\
+            const views = document.querySelectorAll('.view-section');\
+\
+            navButtons.forEach(btn => \{\
+                btn.addEventListener('click', () => \{\
+                    // Update Active Button Styles\
+                    navButtons.forEach(b => \{\
+                        b.classList.remove('nav-tab-active', 'border-teal-500', 'text-teal-800');\
+                        b.classList.add('border-transparent', 'text-slate-600');\
+                    \});\
+                    \
+                    // Specific logic for desktop tabs vs mobile\
+                    if(btn.classList.contains('inline-flex')) \{\
+                        btn.classList.add('nav-tab-active');\
+                    \} else \{\
+                        btn.classList.add('text-teal-800', 'font-bold');\
+                    \}\
+\
+                    // Toggle Views\
+                    views.forEach(v => v.classList.remove('view-active'));\
+                    const targetId = btn.getAttribute('data-target');\
+                    document.getElementById(targetId).classList.add('view-active');\
+\
+                    // If Agenda view is opened, ensure chart is rendered correctly\
+                    if(targetId === 'view-agenda' && !window.chartRendered) \{\
+                        initChart();\
+                        window.chartRendered = true;\
+                    \}\
+                \});\
+            \});\
+        \});\
+\
+        // --- 2. Interactive Timeline Toggle ---\
+        function toggleTimeline(blockId) \{\
+            const content = document.getElementById(blockId);\
+            // Close all others\
+            const allContents = document.querySelectorAll('.timeline-content');\
+            allContents.forEach(el => \{\
+                if(el.id !== blockId) el.classList.remove('expanded');\
+            \});\
+            // Toggle clicked\
+            content.classList.toggle('expanded');\
+        \}\
+\
+        // --- 3. Chart.js Visualization ---\
+        function initChart() \{\
+            const ctx = document.getElementById('agendaChart').getContext('2d');\
+            \
+            new Chart(ctx, \{\
+                type: 'doughnut',\
+                data: \{\
+                    labels: [\
+                        'A: Identidad', \
+                        'B: Operaciones y Comms', \
+                        'C: Terap\'e9utico', \
+                        'D: Innovaci\'f3n y Redes'\
+                    ],\
+                    datasets: [\{\
+                        data: [45, 45, 45, 45], // Equal distribution as per plan\
+                        backgroundColor: [\
+                            'rgba(13, 148, 136, 0.8)', // Teal\
+                            'rgba(245, 158, 11, 0.8)', // Amber\
+                            'rgba(59, 130, 246, 0.8)', // Blue\
+                            'rgba(139, 92, 246, 0.8)'  // Purple\
+                        ],\
+                        hoverOffset: 10,\
+                        borderWidth: 2,\
+                        borderColor: '#ffffff'\
+                    \}]\
+                \},\
+                options: \{\
+                    responsive: true,\
+                    maintainAspectRatio: false,\
+                    cutout: '65%',\
+                    plugins: \{\
+                        legend: \{\
+                            position: 'bottom',\
+                            labels: \{\
+                                font: \{ family: 'Inter', size: 12 \},\
+                                padding: 20,\
+                                usePointStyle: true\
+                            \}\
+                        \},\
+                        tooltip: \{\
+                            callbacks: \{\
+                                label: function(context) \{\
+                                    return ` $\{context.label\}: $\{context.raw\} min`;\
+                                \}\
+                            \}\
+                        \}\
+                    \}\
+                \}\
+            \});\
+        \}\
+    </script>\
+</body>\
+</html>\
+}
